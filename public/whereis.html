@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Node.js Interaction</title>
+</head>
+<body>
+  <h1>Where is Itai?</h1>
+
+  <p id="serverMessage"></p>
+
+  <form id="dataForm">
+<!--    <input type="text" name="name" placeholder="Enter your name" required> -->
+  
+     <label for="Friday Date">Pick a Friday:</label>
+  <input type="date" id="myFriday" name="myFriday">
+   <div>
+       <button type="submit">Send</button>
+   </div>
+  
+  </form>
+  <p id="response"></p>
+
+  <script>
+
+    // POST request example
+    document.getElementById('dataForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = e.target.name.value;
+      fridayDate = document.getElementById('myFriday').value;
+      //alert(myFriday);
+      //let fridayDate = new Date(Date.UTC(myFriday)); // October 3, 2025
+      //alert(fridayDate);
+      const res = await fetch('/api/weekend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fridayDate })
+      });
+
+      const data = await res.json();
+      document.getElementById('response').innerText = data.message;
+    });
+  </script>
+</body>
+</html>
