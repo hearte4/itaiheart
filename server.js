@@ -3,9 +3,9 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'public'))); // Serve CSS, JS, images
+
 app.use(express.json());
-
-
 
 function weeksBetweenFridays(startFriday) {
     // Ensure input is a Date object
