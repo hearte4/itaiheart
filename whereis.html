@@ -12,7 +12,7 @@
   <form id="dataForm">
 <!--    <input type="text" name="name" placeholder="Enter your name" required> -->
      <div>
-        <label for="Friday Date">Pick a Friday:</label>
+        <label for="Friday Date">Pick a day:</label>
       <input type="date" id="myFriday" name="myFriday">
      </div>
   
@@ -29,14 +29,14 @@
     document.getElementById('dataForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = e.target.name.value;
-      fridayDate = document.getElementById('myFriday').value;
+      requestedDate = document.getElementById('myFriday').value;
       //alert(myFriday);
       //let fridayDate = new Date(Date.UTC(myFriday)); // October 3, 2025
-      //alert(fridayDate);
+      alert(requestedDate);
       const res = await fetch('/api/weekend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fridayDate })
+        body: JSON.stringify({ requestedDate })
       });
 
       const data = await res.json();

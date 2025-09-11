@@ -3,16 +3,40 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+// Create a new Map
+const week1Schedule = new Map();
+
+// Set values: day of the week -> assignee name
+week1Schedule.set('Sunday', 'Dana');
+week1Schedule.set('Monday', 'Elad');
+week1Schedule.set('Tuesday', 'Dana');
+week1Schedule.set('Wednesday', 'Dana');
+week1Schedule.set('Thursday', 'Elad');
+week1Schedule.set('Friday', 'Elad');
+week1Schedule.set('Saturday', 'Elad');
+
+const week2Schedule = new Map();
+
+week2Schedule.set('Sunday', 'Elad');
+week2Schedule.set('Monday', 'Elad');
+week2Schedule.set('Tuesday', 'Dana');
+week2Schedule.set('Wednesday', 'Dana');
+week2Schedule.set('Thursday', 'Elad');
+week2Schedule.set('Friday', 'Dana');
+week2Schedule.set('Saturday', 'Dana');
+
 app.use(express.static(path.join(__dirname, 'public'))); // Serve CSS, JS, images
 
 app.use(express.json());
 
-function weeksBetweenFridays(startFriday) {
+function weeksToSelectedDay(selectedDate) {
     // Ensure input is a Date object
-    const endDate = new Date(startFriday);
+    const endDate = new Date(selectedDate);
     
-    // Target Friday
-    const startDate = new Date('2025-09-05');
+    // Target Sunday that implies schedule #1
+    const startDate = new Date('2025-08-31');
 
     // Calculate difference in milliseconds
     const diffMs = endDate - startDate;                                                                                                         
@@ -22,6 +46,26 @@ function weeksBetweenFridays(startFriday) {
 
     return diffWeeks;
 }
+
+function getWeekStartingSunday(dateInput) {
+  const date = new Date(dateInput);        // parse input date
+  const day = date.getUTCDay();             // 0=Sunday ... 6=Saturday
+
+  // Calculate how many days to subtract to get to Sunday
+  const diff = day; 
+
+  // Create a new date at UTC midnight of the Sunday
+  const sunday = new Date(Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate() - diff,
+    0, 0, 0, 0
+  ));
+
+  return sunday;
+}
+
+
 
 
 app.get('/', (req, res) => {
@@ -46,18 +90,24 @@ app.post('/api/data', (req, res) => {
 });
 
 app.post('/api/weekend', (req, res) => {
-    let eladweekend = new Date(Date.UTC(2025,8,5));
-    let danaweekend = new Date(Date.UTC(2025, 8, 12)); 
-    let { fridayDate } = req.body;
-    console.log(fridayDate);
-    let diffweeks = weeksBetweenFridays(fridayDate);
-    if (diffweeks % 2 === 0) {
-        console.log("Elad");
-        res.json({ message: `Elad` });
-    } else {
-        console.log("Dana");
-        res.json({ message: `Dana` }); 
+    // let eladweekend = new Date(Date.UTC(2025,8,5));
+    // let danaweekend = new Date(Date.UTC(2025, 8, 12)); 
+    console.log(req.body);
+    let { requestedDate } = req.body;
+    requestedDate = new Date(requestedDate);
+    console.log(requestedDate);
+    let startingSunday = getWeekStartingSunday(requestedDate);
+    let diffweeks = weeksToSelectedDay(startingSunday);
+    console.log(diffweeks);
+    let parent;
+    console.log('get day'+requestedDate.getDay());
+    if (diffweeks % 2 === 0) { //schedule #1
+       parent = week1Schedule.get(dayNames[requestedDate.getDay()])
+    } else { //schedule #2
+        parent = week2Schedule.get(dayNames[requestedDate.getDay()])
     }
+    console.log(parent);
+    res.json({ message: parent });
 });
 
 app.listen(80, '0.0.0.0', () => {
