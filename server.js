@@ -5,6 +5,8 @@ const app = express();
 
 app.use(express.json());
 
+
+
 function weeksBetweenFridays(startFriday) {
     // Ensure input is a Date object
     const endDate = new Date(startFriday);
@@ -27,9 +29,8 @@ app.get('/', (req, res) => {
 });
 
 // Route to serve the HTML file
-app.get('/whereis', (req, res) => {
-
-  res.sendFile(path.join(__dirname, 'public', 'whereis.html'));
+app.get('/where', (req, res) => {
+  res.sendFile(path.join(__dirname, 'whereis.html'));
 });
 
 app.get('/api/message', (req, res) => {
@@ -37,7 +38,7 @@ app.get('/api/message', (req, res) => {
 });
 
 app.post('/api/data', (req, res) => {
-          console.log("elad3");
+          console.log("elad3"); 
         console.log(req.body)
       
   const { name } = req.body;

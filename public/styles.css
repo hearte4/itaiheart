@@ -1,0 +1,94 @@
+/* style.css */
+
+/* Basic Reset */
+
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+    flex-direction: column; /* stack children vertically */
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  background: #f0f4f8;
+  padding: 20px; 
+}
+
+form {
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #333333;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555555;
+  text-align: left;
+}
+
+input[type="date"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+
+  #serverMessage, #response {
+  margin-top: 15px;
+  font-size: 26px;
+  color: #333;
+  background-color: #fefefe;        /* very light background */
+  border-left: 4px solid #007BFF;   /* subtle colored accent */
+  padding: 8px 12px;                /* less padding, softer look */
+  border-radius: 4px;               /* small rounded corners */
+  max-width: 300px;
+  text-align: left;
+  box-shadow: none;                  /* remove button-like shadow */
+}
+
+
+
+
