@@ -111,5 +111,5 @@ app.post('/api/weekend', (req, res) => {
 });
 
 app.listen(80, '0.0.0.0', () => {
-  console.log('Server is running on http://localhost:80');
+  //console.log('Server is running on http://localhost:80');
 });
