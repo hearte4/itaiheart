@@ -3,8 +3,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+const PORT = process.env.PORT || 3000;
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
 // Create a new Map
 const week1Schedule = new Map();
 
@@ -110,6 +110,8 @@ app.post('/api/weekend', (req, res) => {
     res.json({ message: parent });
 });
 
-app.listen(80, '0.0.0.0', () => {
-  //console.log('Server is running on http://localhost:80');
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
