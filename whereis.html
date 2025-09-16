@@ -1,47 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Itai Heart Beitner</title>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
 
-    <h1>Where is Itai?</h1>
+<head>
+  <meta charset="UTF-8" />
+  <title>Itai Heart Beitner</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <h1>Where is Itai?</h1>
 
   <form id="dataForm">
-<!--    <input type="text" name="name" placeholder="Enter your name" required> -->
-     <div>
-        <label for="Friday Date">Hi, Pick a day:</label>
-      <input type="date" id="myFriday" name="myFriday">
-     </div>
-  
-   <div>
-       <button type="submit">Send</button>
-   </div>
-  
+    <div class="panel-container">
+      <!-- Date Picker Panel -->
+      <div class="panel">
+
+        <h3>Pick a day:</h3>
+
+        <div>
+          <input type="date" id="myFriday" name="myFriday" />
+        </div>
+
+
+        <div class="form-actions">
+          <button type="submit" id="sendDate">Send</button>
+        </div>
+        <div>
+          <p id="dayResponse"></p>
+        </div>
+      </div>
+
+      <!-- Holiday Dropdown Panel -->
+      <div class="panel">
+        <h3>Choose a holiday:</h3>
+        <div>
+          <select id="holidaySelect"></select>
+        </div>
+        <div>
+          <select id="holidayYearSelect"></select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="sendHoliday">Send</button>
+        </div>
+        <div>
+          <p id="holidayResponse"></p>
+        </div>
+      </div>
+
+
   </form>
-  <p id="response"></p>
 
   <script>
+    //Generate holiday options
+    const select = document.getElementById("holidaySelect");
+
+    //load holiday names from server
+    async function loadHolidays() {
+      try {
+        // call your API
+        const response = await fetch("/holidayNames");
+        const holidays = await response.json();
+
+        // find the dropdown
+        const select = document.getElementById("holidaySelect");
+
+        // populate options
+        holidays.forEach((holiday) => {
+          const option = document.createElement("option");
+          option.value = holiday;
+          option.textContent = holiday;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Failed to load holidays:", error);
+      }
+    }
+
+    //load years 
+    function loadYears() {
+      const numberOfYears = 3
+      const select = document.getElementById("holidayYearSelect");
+      const currentYear = new Date().getFullYear();
+      for (let year = currentYear; year <= currentYear + numberOfYears; year++) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        select.appendChild(option);
+      }
+    }
 
     // POST request example
-    document.getElementById('dataForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = e.target.name.value;
-      requestedDate = document.getElementById('myFriday').value;
-      //alert(myFriday);
-      //let fridayDate = new Date(Date.UTC(myFriday)); // October 3, 2025
-      //alert(requestedDate);
-      const res = await fetch('/api/weekend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requestedDate })
+    document
+      .getElementById("dataForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const clickedButton = e.submitter; // the actual button element
+        console.log("Button ID:", clickedButton.id);
+
+        if (clickedButton.id === "sendDate") {
+          console.log("send Date...");
+          requestedDate = document.getElementById("myFriday").value;
+          const res = await fetch("/api/weekend", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ requestedDate }),
+          });
+
+          const data = await res.json();
+          document.getElementById("dayResponse").innerText =
+            "--> With " + data.message;
+
+        } else {
+          if (clickedButton.id === "sendHoliday") {
+            console.log("send Holiday...");
+            holidayName = document.getElementById("holidaySelect").value;
+            year = document.getElementById("holidayYearSelect").value;
+            const res = await fetch("/api/holiday", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ holidayName, year }),
+            });
+
+            const data = await res.json();
+            document.getElementById("holidayResponse").innerText =
+              "--> With " + data.message;
+          }
+        }
+
       });
 
-      const data = await res.json();
-      document.getElementById('response').innerText = '--> With '+data.message;
-    });
+    // load dropdown when page is ready
+    loadHolidays();
+    loadYears();
   </script>
 </body>
+
 </html>

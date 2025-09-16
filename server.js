@@ -6,26 +6,47 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 // Create a new Map
+
+const dad = 'Elad';  
+const mom = 'Dana';
+
 const week1Schedule = new Map();
 
 // Set values: day of the week -> assignee name
-week1Schedule.set('Sunday', 'Dana');
-week1Schedule.set('Monday', 'Elad');
-week1Schedule.set('Tuesday', 'Dana');
-week1Schedule.set('Wednesday', 'Dana');
-week1Schedule.set('Thursday', 'Elad');
-week1Schedule.set('Friday', 'Elad');
-week1Schedule.set('Saturday', 'Elad');
+week1Schedule.set('Sunday', mom);
+week1Schedule.set('Monday', dad);
+week1Schedule.set('Tuesday', mom);
+week1Schedule.set('Wednesday', mom);
+week1Schedule.set('Thursday', dad);
+week1Schedule.set('Friday', dad);
+week1Schedule.set('Saturday', dad);
 
 const week2Schedule = new Map();
 
-week2Schedule.set('Sunday', 'Elad');
-week2Schedule.set('Monday', 'Elad');
-week2Schedule.set('Tuesday', 'Dana');
-week2Schedule.set('Wednesday', 'Dana');
-week2Schedule.set('Thursday', 'Elad');
-week2Schedule.set('Friday', 'Dana');
-week2Schedule.set('Saturday', 'Dana');
+week2Schedule.set('Sunday', dad);
+week2Schedule.set('Monday', dad);
+week2Schedule.set('Tuesday', mom);
+week2Schedule.set('Wednesday', mom);
+week2Schedule.set('Thursday', dad);
+week2Schedule.set('Friday', mom);
+week2Schedule.set('Saturday', mom);
+
+//Holidays
+
+const holidaysSchedule = new Map();
+
+holidaysSchedule.set('RoshHashana', mom);
+holidaysSchedule.set('YomKipur', dad);
+holidaysSchedule.set('Sukot1', mom);
+holidaysSchedule.set('Sukot2', dad);
+holidaysSchedule.set('Purim', dad);
+holidaysSchedule.set('Passover1', dad);
+holidaysSchedule.set('Passover2', mom);
+holidaysSchedule.set('Azmaut', mom);
+holidaysSchedule.set('Shavuot', dad);
+
+const startingYear = 2025;
+
 
 app.use(express.static(path.join(__dirname, 'public'))); // Serve CSS, JS, images
 
@@ -65,6 +86,13 @@ function getWeekStartingSunday(dateInput) {
   return sunday;
 }
 
+function reverseParent(parent) {
+    if (parent === dad) {
+        return mom;
+      } else {
+        return dad;
+      }
+}
 
 
 
@@ -82,7 +110,7 @@ app.get('/api/message', (req, res) => {
 });
 
 app.post('/api/data', (req, res) => {
-          console.log("elad3"); 
+          console.log("dad3"); 
         console.log(req.body)
       
   const { name } = req.body;
@@ -90,8 +118,8 @@ app.post('/api/data', (req, res) => {
 });
 
 app.post('/api/weekend', (req, res) => {
-    // let eladweekend = new Date(Date.UTC(2025,8,5));
-    // let danaweekend = new Date(Date.UTC(2025, 8, 12)); 
+    // let dadweekend = new Date(Date.UTC(2025,8,5));
+    // let momweekend = new Date(Date.UTC(2025, 8, 12)); 
     console.log(req.body);
     let { requestedDate } = req.body;
     requestedDate = new Date(requestedDate);
@@ -110,6 +138,23 @@ app.post('/api/weekend', (req, res) => {
     res.json({ message: parent });
 });
 
+app.post('/api/holiday', (req, res) => {
+    console.log(req.body);
+    let { holidayName } = req.body;
+    let { year } = req.body;
+    console.log(holidayName);
+    let parent = holidaysSchedule.get(holidayName);
+    if ((year - startingYear) % 2 == 1) { 
+      parent = reverseParent(parent);
+    }
+    console.log(parent);
+    res.json({ message: parent });
+});
+
+app.get("/holidayNames", (req, res) => {
+  const holidayNames = Array.from(holidaysSchedule.keys());
+  res.json(holidayNames);
+});
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
