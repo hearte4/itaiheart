@@ -36,7 +36,7 @@ week2Schedule.set('Saturday', mom);
 const holidaysSchedule = new Map();
 
 holidaysSchedule.set('Rosh Hashana', mom);
-holidaysSchedule.set('YomK ipur', dad);
+holidaysSchedule.set('Yom Kipur', dad);
 holidaysSchedule.set('Sukot1', mom);
 holidaysSchedule.set('Sukot2', dad);
 holidaysSchedule.set('Purim', dad);
@@ -150,7 +150,7 @@ app.post('/api/holiday', (req, res) => {
     res.json({ message: parent });
 });
 
-app.get("/holidayNames", (req, res) => {
+app.get("/api/holidayNames", (req, res) => {
   const holidayNames = Array.from(holidaysSchedule.keys());
   res.json(holidayNames);
 });

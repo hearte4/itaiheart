@@ -58,9 +58,8 @@
     async function loadHolidays() {
       try {
         // call your API
-        const response = await fetch("/holidayNames");
-        const holidays = await response.json();
-
+        const response = await fetch("/api/holidayNames");
+        const holidays = await response.json()
         // find the dropdown
         const select = document.getElementById("holidaySelect");
 
@@ -84,9 +83,16 @@
       for (let year = currentYear; year <= currentYear + numberOfYears; year++) {
         const option = document.createElement("option");
         option.value = year;
-        option.textContent = year + " / "+ (year + 1);
+        option.textContent = year + " / " + (year + 1);
         select.appendChild(option);
       }
+    }
+
+    function loadTodayDate() {
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("myFriday").value = today;
+      const sendDayButton = document.getElementById('sendDate');
+      sendDayButton.click();
     }
 
     // POST request example
@@ -133,6 +139,7 @@
     // load dropdown when page is ready
     loadHolidays();
     loadYears();
+    loadTodayDate()
   </script>
 </body>
 
