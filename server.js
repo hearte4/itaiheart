@@ -35,8 +35,8 @@ week2Schedule.set('Saturday', mom);
 
 const holidaysSchedule = new Map();
 
-holidaysSchedule.set('RoshHashana', mom);
-holidaysSchedule.set('YomKipur', dad);
+holidaysSchedule.set('Rosh Hashana', mom);
+holidaysSchedule.set('YomK ipur', dad);
 holidaysSchedule.set('Sukot1', mom);
 holidaysSchedule.set('Sukot2', dad);
 holidaysSchedule.set('Purim', dad);
@@ -45,8 +45,7 @@ holidaysSchedule.set('Passover2', mom);
 holidaysSchedule.set('Azmaut', mom);
 holidaysSchedule.set('Shavuot', dad);
 
-const startingYear = 2025;
-
+const startingYear = 2025; //we say year 2025 although Tishrei Holidays and Hanuka are in 2024, but the majority of the holidays are in 2025.
 
 app.use(express.static(path.join(__dirname, 'public'))); // Serve CSS, JS, images
 
