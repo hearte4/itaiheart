@@ -13,7 +13,7 @@ const mom = 'Dana';
 const week1Schedule = new Map();
 
 // Set values: day of the week -> assignee name
-week1Schedule.set('Sunday', mom);
+week1Schedule.set('Sunday', dad);
 week1Schedule.set('Monday', dad);
 week1Schedule.set('Tuesday', mom);
 week1Schedule.set('Wednesday', mom);
@@ -23,7 +23,7 @@ week1Schedule.set('Saturday', dad);
 
 const week2Schedule = new Map();
 
-week2Schedule.set('Sunday', dad);
+week2Schedule.set('Sunday', mom);
 week2Schedule.set('Monday', dad);
 week2Schedule.set('Tuesday', mom);
 week2Schedule.set('Wednesday', mom);
